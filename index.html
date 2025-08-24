@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Noctis Wear - หน้าแรก</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif; }
+body { 
+    background: linear-gradient(to bottom, #0f0f1a, #1a1a2e); 
+    color: #f5f5f5; 
+    line-height:1.6; 
+    overflow-x:hidden;
+}
+
+/* Header */
+header { 
+    display:flex; 
+    align-items:center; 
+    justify-content:space-between; 
+    padding:20px 40px; 
+    font-size:28px; 
+    font-weight:700; 
+    color:#ffd700; 
+    background:rgba(0,0,0,0.7); 
+    box-shadow:0 4px 15px rgba(0,0,0,0.6);
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+nav button { 
+    margin-left:10px; 
+    padding:12px 20px; 
+    border:none; 
+    border-radius:8px; 
+    cursor:pointer; 
+    font-weight:bold; 
+    background:#4d79ff; 
+    color:#fff; 
+    transition:0.3s; 
+    font-size:16px;
+    box-shadow:0 0 10px rgba(77,121,255,0.6);
+}
+nav button:hover { 
+    transform:scale(1.08); 
+    background:#3356cc; 
+    box-shadow:0 0 20px rgba(77,121,255,0.9);
+}
+
+/* Hero */
+.hero {
+    text-align:center;
+    padding:60px 20px;
+    background:linear-gradient(to right, rgba(26,26,46,0.9), rgba(22,36,71,0.9)), url('https://images.unsplash.com/photo-1521334884684-d80222895322?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+    color:#fff;
+    border-bottom:3px solid #ffd700;
+    animation: fadeIn 1.5s ease-in-out;
+}
+.hero h1 {
+    font-size:48px;
+    color:#ffd700;
+    margin-bottom:20px;
+}
+.hero p {
+    font-size:20px;
+    max-width:700px;
+    margin:0 auto;
+    opacity:0.9;
+}
+
+/* Section Layout */
+main { 
+    display:grid; 
+    grid-template-columns:1fr 1fr; 
+    gap:20px; 
+    padding:40px; 
+}
+.description, .promo { 
+    background:rgba(255,255,255,0.05); 
+    padding:20px; 
+    border-radius:12px; 
+    border:1px solid rgba(255,215,0,0.4); 
+    backdrop-filter: blur(6px);
+    animation: slideUp 1.2s ease;
+}
+.description p, .promo li {
+    margin-bottom:10px;
+}
+.promo { 
+    border:2px solid #ffd700; 
+    background:#111; 
+}
+.promo h2 { 
+    color:#ffd700; 
+    margin-bottom:15px; 
+    font-size:22px; 
+}
+.promo ul { padding-left:20px; }
+
+/* Footer */
+footer { 
+    background:#0f0f1a; 
+    color:#fff; 
+    padding:20px; 
+    text-align:center; 
+    font-size:14px; 
+    border-top:2px solid #ffd700;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(-20px);}
+  to {opacity:1; transform:translateY(0);}
+}
+@keyframes slideUp {
+  from {opacity:0; transform:translateY(30px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+/* Responsive */
+@media(max-width: 900px) {
+    main { grid-template-columns:1fr; }
+    .hero h1 { font-size:36px; }
+    .hero p { font-size:18px; }
+}
+@media(max-width: 600px) {
+    header { flex-direction:column; font-size:22px; }
+    nav button { margin-top:10px; }
+    .hero h1 { font-size:28px; }
+    .hero p { font-size:16px; }
+}
+</style>
+</head>
+<body>
+<header>
+    <span>Noctis Wear</span>
+    <nav>
+        <button onclick="window.location.href='shop.html'">🛒 เข้าสู่หน้าร้าน</button>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>ยินดีต้อนรับสู่ Noctis Wear</h1>
+    <p>แฟชั่นที่ผสมผสานความเท่ ความทันสมัย และคุณภาพพรีเมียม  
+    พร้อมโปรโมชั่นสุดพิเศษที่รอคุณอยู่</p>
+</section>
+
+<main>
+    <div class="description">
+        <!-- ภาษาไทย -->
+        <p>👕 ยินดีต้อนรับสู่ <strong>Noctis Wear</strong> ร้านขายเสื้อแฟชั่นคุณภาพสูง</p>
+        <p>เราคัดสรรเสื้อยืด เสื้อฮู้ด และเสื้อเชิ้ต หลากหลายสไตล์ ดีไซน์เท่ทันสมัย</p>
+        <p>📦 บริการจัดส่งทั่วประเทศ รวดเร็วทันใจ</p>
+
+        <!-- English -->
+        <p>👕 Welcome to <strong>Noctis Wear</strong>, your destination for premium fashion apparel.</p>
+        <p>We offer a wide selection of T-shirts, hoodies, and shirts with modern and stylish designs.</p>
+        <p>📦 Nationwide fast delivery, right to your door.</p>
+    </div>
+
+    <div class="promo">
+        <h2>🔥 โปรโมชั่นพิเศษประจำเดือน</h2>
+        <ul>
+            <li>ซื้อเสื้อยืด 2 ตัว แถมฟรี 1 ตัว</li>
+            <li>ส่วนลด 20% สำหรับเสื้อฮู้ดทุกรุ่น</li>
+            <li>ส่งฟรีเมื่อสั่งซื้อครบ 500 บาท</li>
+            <li>รับคูปองส่วนลด 50 บาท เมื่อสมัครสมาชิกใหม่</li>
+            <li>Flash Sale! เสื้อเชิ้ตลดสูงสุด 40%</li>
+
+            <li>Buy 2 T-shirts, get 1 free</li>
+            <li>20% off on all hoodies</li>
+            <li>Free shipping on orders over 500 THB</li>
+            <li>Get a 50 THB discount coupon for new member registration</li>
+            <li>Flash Sale! Shirts up to 40% off</li>
+        </ul>
+    </div>
+</main>
+
+<footer>
+    <p>📞 ติดต่อเรา:</p>
+    <p>อีเมล: noctiswear@example.com | โทร: 080-123-4567 | ไลน์: @noctiswear</p>
+</footer>
+</body>
+</html>
