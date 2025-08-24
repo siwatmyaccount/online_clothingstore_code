@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<title>Noctis Wear - ร้านค้า</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif; }
+body { background: linear-gradient(to bottom, #1a1a2e, #162447); color: #f5f5f5; }
+header { display: flex; align-items: center; padding: 20px 40px; font-size: 36px; font-weight: 700; justify-content: space-between; color: #ffd700; box-shadow: 0 4px 10px rgba(0,0,0,0.3); background-color: rgba(0,0,0,0.6); }
+nav button { margin-left: 10px; margin-right: 80px; padding: 8px 12px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; background-color:#4d79ff; color:#fff; transition: transform 0.2s; }
+nav button:hover { transform: scale(1.1); }
+.description { text-align: left; padding: 20px 40px; font-size: 18px; color: #e0e0e0; background-color: rgba(255,255,255,0.05); border-left: 6px solid #ffd700; margin-bottom: 30px; border-radius: 8px; }
+#searchContainer { text-align:center; margin-bottom:20px; }
+#search { padding:8px; width:60%; max-width:400px; border-radius:8px; border:2px solid #ffd700; background-color:#1b1b2f; color:#ffd700; font-weight:bold; }
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  padding: 0 40px 40px 40px;
+  justify-content: center; /* จัดกลางเมื่อมีการ์ดน้อย */
+  max-width: 1200px; /* ไม่ให้การ์ดขยายเกินนี้ */
+  margin: 0 auto;    /* จัดกลาง container */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 300px));
+
+}
+
+.product-card {
+  width: 100%; /* เต็มช่อง grid */
+  background-color: #222;
+  border: 2px solid #ffd700;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5); }
+.product-card img { width: 100%; border-radius: 10px; display:block; }
+.product-card h3 { margin: 10px 0 5px 0; color: #ffd700; }
+.product-card p { margin: 5px 0; color: #ddd; }
+.product-card select, .product-card input[type="number"] { width: 100%; margin-bottom: 8px; padding: 8px; border-radius: 10px; border: 2px solid #ffd700; background-color: #1b1b2f; color: #ffd700; font-weight: bold; appearance: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+.product-card select:hover, .product-card input[type="number"]:hover { transform: scale(1.03); box-shadow: 0 0 10px rgba(255,215,0,0.7); }
+.product-card button { margin: 5px 5px 0 5px; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: transform 0.2s; width: 48%; }
+.buy-btn { background-color: #ff4d4d; color: #fff; }
+.add-cart-btn { background-color: #4d79ff; color: #fff; }
+.buy-btn:hover, .add-cart-btn:hover { transform: scale(1.05); }
+.cart-container { position: fixed; top: 20px; right: 20px; text-align: center; z-index: 1000; }
+.cart-btn { background-color: #ffd700; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 0 12px rgba(0,0,0,0.5); transition: transform 0.2s; }
+.cart-btn:hover { transform: scale(1.1); }
+.cart-btn img { width: 30px; height: 30px; display:block; }
+.cart-panel { position: fixed; top: 0; right: -420px; width: 400px; height: 100%; background-color: #1b1b2f; box-shadow: -5px 0 15px rgba(0,0,0,0.5); padding: 20px; overflow-y: auto; transition: right 0.3s ease; z-index: 999; display: flex; flex-direction: column; }
+.cart-panel.active { right: 0; }
+.cart-panel h2 { text-align: center; color: #ffd700; margin-bottom: 20px; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 10px; border: 1px solid #444; border-radius: 8px; background-color: #2e2e3e; color: #fff; }
+.cart-item-info { flex: 1; text-align: left; }
+.cart-item input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+.cart-item input[type="number"] { width: 60px; margin-left: 5px; }
+.cart-item button.delete-btn { background-color: #ff4d4d; color: #fff; border: none; border-radius: 5px; cursor: pointer; padding: 5px 8px; margin-left: 10px; transition: background-color 0.2s; }
+.cart-item button.delete-btn:hover { background-color: #e60000; }
+.cart-buttons { margin-top: auto; background-color: #1b1b2f; padding: 15px 0; display: flex; flex-direction: column; gap:10px; border-top: 2px solid #ffd700; }
+.cart-buttons button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: transform 0.2s; width: 90%; margin: 0 auto; }
+.cart-buttons button:hover { transform: scale(1.05); }
+.checkout-btn { background-color: #ff4d4d; color: #fff; }
+.checkout-all-btn { background-color: #4d79ff; color: #fff; }
+.clear-cart-btn { background-color:#888; color:#fff; }
+#checkout-selected-btn { background-color:#ff9900; color:#fff; }
+#order-form { display:none; margin:20px 40px; background-color:#222; padding:20px; border-radius:10px; border:2px solid #ffd700; }
+#order-form label { display:block; margin-top:10px; font-weight:bold; }
+#order-form input, #order-form textarea { width:100%; padding:8px; margin-top:5px; border-radius:8px; border:2px solid #ffd700; background:#1b1b2f; color:#ffd700; }
+#order-form button { margin-top:15px; background:#ff4d4d; color:#fff; border:none; padding:10px 15px; border-radius:8px; cursor:pointer; font-weight:bold; transition:0.2s; }
+#order-form button:hover { transform: scale(1.05); }
+#order-items { margin-top:10px; max-height:200px; overflow-y:auto; border:1px solid #444; padding:10px; border-radius:8px; }
+footer { background-color: #162447; color: #fff; padding: 30px 20px; text-align: center; margin-top: 30px; border-top: 2px solid #ffd700; }
+.flying-img { position: absolute; width: 50px; height:50px; transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out; z-index: 1000; border-radius:5px; }
+
+/* เอฟเฟกต์เสริม */
+body { background: linear-gradient(135deg, #0f0f1a, #1a1a2e, #162447); color: #f5f5f5; }
+header { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border-bottom: 2px solid rgba(255, 215, 0, 0.3); transition: 0.3s; }
+header:hover { background: rgba(0, 0, 0, 0.8); }
+#search { transition: 0.3s ease; box-shadow: 0 0 8px rgba(255, 215, 0, 0.2); }
+#search:focus { outline: none; box-shadow: 0 0 15px rgba(255, 215, 0, 0.7); }
+.product-card { position: relative; background: rgba(20, 20, 30, 0.9); backdrop-filter: blur(8px); border: 2px solid rgba(255, 215, 0, 0.3); transition: all 0.3s ease; overflow: hidden; }
+.product-card:hover { transform: translateY(-8px) scale(1.03); border: 2px solid #ffd700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+.product-card::after { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(120deg, transparent, rgba(255,215,0,0.2), transparent); transform: rotate(25deg); transition: 0.5s; opacity: 0; pointer-events: none; }
+.product-card:hover::after { top: 0; left: 0; opacity: 1; }
+.product-card button { position: relative; z-index: 1; }
+@media screen and (max-width: 900px){ .products { justify-content: center; } .product-card { width: 45%; } .cart-panel { width: 90%; } }
+@media screen and (max-width: 500px){ .product-card { width: 90%; } .product-card button { width:100%; margin-top:5px; } }
+</style>
+</head>
+
+<body>
+<header>
+  <span>Noctis Wear</span>
+  <nav>
+    <button onclick="window.location.href='index.html'">Home / หน้าแรก</button>
+  </nav>
+</header>
+
+<section class="description">
+  <p>ยินดีต้อนรับสู่ <strong>Noctis Wear</strong> ร้านขายเสื้อแฟชั่นคุณภาพสูง มีทั้งเสื้อยืด เสื้อฮู้ด และเสื้อเชิ้ตหลากหลายสไตล์ สำหรับทุกโอกาส</p>
+</section>
+
+<div id="searchContainer">
+  <input type="text" id="search" placeholder="ค้นหาสินค้า...">
+</div>
+
+<section class="products" id="products"></section>
+
+<!-- ปุ่มตะกร้า: แก้แท็ก <img> ให้ถูกต้อง และใช้รูป data:URI ภายใน -->
+<div class="cart-container">
+  <div class="cart-btn" id="cartBtn" title="ตะกร้าสินค้า">
+    <img alt="cart" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M0 0h24v24H0z' fill-opacity='0'/%3E%3Cpath fill='%23000' d='M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2m10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2M7.16 14.26l.03.01l12.02-1.71c.47-.07.86-.42.98-.87l1.69-6.76A1 1 0 0 0 20.94 3H5.21l-.2-1.01A1 1 0 0 0 4.03 1H1v2h2.23l2.54 12.03c.11.54.59.94 1.15.94H19v-2H7.42z'/%3E%3C/svg%3E" />
+  </div>
+</div>
+
+<div class="cart-panel" id="cartPanel">
+  <h2>ตะกร้าของคุณ</h2>
+  <div id="cartItems"></div>
+  <div class="cart-buttons">
+    <button id="selectAllBtn">เลือก/ยกเลิกทั้งหมด</button>
+    <button id="checkoutSelectedBtn">ชำระเงินสินค้าที่เลือก</button>
+    <button id="checkoutAllBtn">ชำระเงินทั้งหมด</button>
+    <button id="clearCartBtn">ล้างตะกร้า</button>
+  </div>
+  <div id="cartTotal" style="color:#ffd700; font-weight:bold; margin-top:10px; text-align:right;">
+  รวมทั้งหมด: 0 บาท
+</div>
+
+</div>
+
+<div id="order-form">
+  <h2>กรอกข้อมูลผู้สั่งซื้อ</h2>
+
+  <!-- รายการสินค้า -->
+  <div id="order-items"></div>
+
+  <!-- ยอดรวม -->
+  <div id="order-total" style="color:#ffd700; font-weight:bold; margin-top:10px; text-align:left;">
+    รวมทั้งหมด: 0 บาท
+  </div>
+
+  <!-- ฟอร์มกรอกข้อมูลลูกค้า -->
+  <label>ชื่อ-นามสกุล:</label>
+  <input type="text" id="customer-name" required>
+
+  <label>เบอร์โทร:</label>
+  <input type="text" id="customer-phone" required>
+
+  <label>ที่อยู่:</label>
+  <textarea id="customer-address" required></textarea>
+
+  <button id="placeOrderBtn">ยืนยันสั่งซื้อ</button>
+  <button id="cancel-btn" style="background-color: red; color: #fff; margin-left: 10px;">ยกเลิก</button>
+</div>
+
+</div>
+
+<footer>
+  <p>ติดต่อเรา:</p>
+  <p>อีเมล: noctiswear@example.com | โทร: 080-123-4567 | ไลน์: @noctiswear</p>
+</footer>
+
+<script>
+const productsContainer = document.getElementById('products');
+const cartPanel = document.getElementById('cartPanel');
+const cartItemsContainer = document.getElementById('cartItems');
+const orderForm = document.getElementById('order-form');
+const orderItemsDiv = document.getElementById('order-items');
+
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let tempBuyNowCart = null;
+
+const productNames = [
+  "เสื้อยืด Lumix","เสื้อยืด Vortex","เสื้อแฟชั่น Nova","เสื้อฮู้ด Eclipse",
+  "เสื้อเชิ้ต Orion","เสื้อยืด Comet","เสื้อแฟชั่น Nebula","เสื้อฮู้ด Galaxy",
+  "เสื้อเชิ้ต Meteor"
+];
+const colors = ["ขาว","ดำ","น้ำเงิน","เหลือง","แดง","เทา"];
+
+/* 1) ฟังก์ชันสร้างรูปภาพแบบ SVG data:URI (ไม่พึ่งเว็บนอก) */
+function svgDataUri(productName, options = {}) {
+  const {
+    width = 400,
+    height = 400,
+    bg = '#1b1b2f',
+    fg = '#ffd700',
+    subtitle = 'Noctis Wear'
+  } = options;
+  const safeName = (productName || 'Product').toString().slice(0, 28);
+  const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#141426"/>
+      <stop offset="50%" stop-color="${bg}"/>
+      <stop offset="100%" stop-color="#0f0f1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <rect x="12" y="12" width="${width-24}" height="${height-24}" rx="16" ry="16"
+        fill="none" stroke="${fg}" stroke-opacity="0.6" stroke-width="3"/>
+  <g font-family="Roboto, Arial, sans-serif" text-anchor="middle">
+    <text x="${width/2}" y="${height/2 - 6}" fill="${fg}" font-size="28" font-weight="700">
+      ${safeName}
+    </text>
+    <text x="${width/2}" y="${height/2 + 26}" fill="${fg}" fill-opacity="0.85" font-size="16">
+      ${subtitle}
+    </text>
+  </g>
+</svg>`.trim();
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+function calculateTotal(selectedOnly=false){
+  let total = 0;
+  cart.forEach((item,index)=>{
+    if(selectedOnly){
+      const cb = document.querySelector(`#cartItems input[type="checkbox"][data-index="${index}"]`);
+      if(cb && !cb.checked) return;
+    }
+    total += item.price * item.qty;
+  });
+  document.getElementById('cartTotal').innerText = `รวมทั้งหมด: ${total} บาท`;
+}
+
+/* 2) เวอร์ชันเดียวของ createProductCards ที่ใช้ svgDataUri */
+function createProductCards(){
+  productsContainer.innerHTML='';
+  productNames.forEach((name,i)=>{
+    const price = 250+i*15;
+    const card=document.createElement('div');
+    card.className='product-card';
+    card.dataset.name=name.toLowerCase();
+    card.dataset.colors = colors.join(',').toLowerCase();
+    card.dataset.sizes = "s,m,l,xl";
+
+    const imgSrc = svgDataUri(name, { width: 400, height: 400 });
+    card.innerHTML=`
+      <img src="${imgSrc}" alt="${name}">
+      <h3>${name}</h3>
+      <p>ราคา: ${price} บาท</p>
+      <label>ไซส์:</label>
+      <select id="size${i}">
+        <option value="S">S</option>
+        <option value="M" selected>M</option>
+        <option value="L">L</option>
+        <option value="XL">XL</option>
+      </select>
+      <label>สี:</label>
+      <select id="color${i}">${colors.map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
+      <label>จำนวน:</label>
+      <input type="number" id="qty${i}" value="1" min="1">
+      <button class="buy-btn" onclick="buyNow(${i})">ซื้อเลย</button>
+      <button class="add-cart-btn" onclick="addToCart(${i})">เพิ่มตะกร้า</button>
+    `;
+     card.dataset.index = i; // เพิ่ม data-index ให้ card
+
+card.querySelector('.buy-btn').addEventListener('click', ()=>{
+  buyNow(parseInt(card.dataset.index));
+});
+card.querySelector('.add-cart-btn').addEventListener('click', ()=>{
+  addToCart(parseInt(card.dataset.index));
+});
+    productsContainer.appendChild(card);
+  });
+}
+
+function addToCart(i){
+  const name = productNames[i];
+  const size = document.getElementById(`size${i}`).value;
+  const color = document.getElementById(`color${i}`).value;
+  const qty = parseInt(document.getElementById(`qty${i}`).value);
+  const price = 250+i*15;
+  const item = {name, size, color, qty, price};
+  cart.push(item);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  flyToCart(i);
+  renderCart();
+  cartPanel.classList.add('active');
+}
+
+function buyNow(i){
+  tempBuyNowCart = [];
+  const name = productNames[i];
+  const size = document.getElementById(`size${i}`).value;
+  const color = document.getElementById(`color${i}`).value;
+  const qty = parseInt(document.getElementById(`qty${i}`).value);
+  const price = 250+i*15;
+  tempBuyNowCart.push({name,size,color,qty,price});
+  openOrderForm(tempBuyNowCart);
+}
+
+function renderCart(){
+  cartItemsContainer.innerHTML='';
+  cart.forEach((item,index)=>{
+    const div = document.createElement('div');
+    div.className='cart-item';
+    div.innerHTML=`
+      <input type="checkbox" data-index="${index}" onchange="calculateTotal(true)">
+      <div class="cart-item-info">
+        ${item.name} | ไซส์: ${item.size} | สี: ${item.color} <br> ราคา: ${item.price} x 
+        <input type="number" min="1" value="${item.qty}" onchange="updateQty(${index},this.value)">
+      </div>
+      <button class="delete-btn" onclick="deleteItem(${index})">ลบ</button>
+    `;
+    cartItemsContainer.appendChild(div);
+  });
+  calculateTotal(); // อัปเดตยอดรวมตอน render
+}
+function updateOrderTotal(items){
+  let total = items.reduce((sum,it)=>sum + it.price*it.qty, 0);
+  document.getElementById('order-total').innerText = `รวมทั้งหมด: ${total} บาท`;
+}
+
+function updateQty(i,value){
+  cart[i].qty = parseInt(value);
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function deleteItem(i){
+  if(confirm('ลบสินค้านี้ออกจากตะกร้าหรือไม่?')){
+    cart.splice(i,1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+}
+
+
+document.getElementById('cartBtn').addEventListener('click', ()=>{
+  cartPanel.classList.toggle('active');
+  renderCart();
+});
+
+document.getElementById('clearCartBtn').addEventListener('click', ()=>{
+  if(confirm('ล้างตะกร้าหรือไม่?')){
+    cart = [];
+    localStorage.setItem('cart', JSON.stringify(cart));
+    renderCart();
+  }
+});
+
+document.getElementById('selectAllBtn').addEventListener('click', ()=>{
+  document.querySelectorAll('#cartItems input[type="checkbox"]').forEach(cb=>cb.checked=!cb.checked);
+});
+
+document.getElementById('checkoutAllBtn').addEventListener('click', ()=>{
+  if(cart.length===0){ alert('ตะกร้าว่าง'); return; }
+  openOrderForm(cart);
+});
+
+document.getElementById('checkoutSelectedBtn').addEventListener('click', ()=>{
+  const selected = [];
+  document.querySelectorAll('#cartItems input[type="checkbox"]').forEach(cb=>{
+    if(cb.checked){ selected.push(cart[parseInt(cb.dataset.index)]); }
+  });
+  if(selected.length===0){ alert('เลือกสินค้าเพื่อชำระเงิน'); return; }
+  openOrderForm(selected);
+});
+
+
+function openOrderForm(items){
+  const orderItemsDiv = document.getElementById('order-items');
+  const orderForm = document.getElementById('order-form');
+
+  orderItemsDiv.innerHTML = ''; // เคลียร์ก่อน
+  items.forEach((item,index)=>{
+    const div = document.createElement('div');
+    div.className = 'order-item';
+    div.innerHTML = `
+      ${item.name} | ไซส์:${item.size} | สี:${item.color} |
+      ราคา: ${item.price} บาท x 
+      <input type="number" min="1" value="${item.qty}" data-index="${index}" class="order-qty">
+      = <span class="item-total">${item.price*item.qty}</span> บาท
+    `;
+    orderItemsDiv.appendChild(div);
+
+    // เพิ่ม event listener ให้ input number ของแต่ละสินค้า
+    div.querySelector('.order-qty').addEventListener('input', (e)=>{
+      const idx = e.target.dataset.index;
+      items[idx].qty = Number(e.target.value);
+      div.querySelector('.item-total').innerText = items[idx].price * items[idx].qty;
+      updateOrderTotal(items);
+    });
+  });
+
+  updateOrderTotal(items); // คำนวณยอดรวมตอนเปิดฟอร์ม
+  orderForm.style.display='block';
+  window.scrollTo({top: orderForm.offsetTop, behavior:'smooth'});
+}
+
+
+
+document.getElementById('placeOrderBtn').addEventListener('click', ()=>{
+  const name=document.getElementById('customer-name').value;
+  const phone=document.getElementById('customer-phone').value;
+  const addr=document.getElementById('customer-address').value;
+  if(!name||!phone||!addr){ alert('กรอกข้อมูลให้ครบ'); return; }
+  alert('สั่งซื้อสำเร็จ!\nขอบคุณคุณ '+name);
+  orderForm.style.display='none';
+  if(tempBuyNowCart){ tempBuyNowCart=null; }
+  else{ cart=[]; localStorage.setItem('cart', JSON.stringify(cart)); renderCart(); }
+  document.getElementById('customer-name').value='';
+  document.getElementById('customer-phone').value='';
+  document.getElementById('customer-address').value='';
+  
+});
+// ปุ่มยกเลิกคำสั่งซื้อ
+document.getElementById('cancel-btn').addEventListener('click', () => {
+    // ซ่อนฟอร์มทั้งหมด
+    document.getElementById('order-form').style.display = 'none';
+
+    // เคลียร์ข้อมูล input
+    document.getElementById('customer-name').value = '';
+    document.getElementById('customer-phone').value = '';
+    document.getElementById('customer-address').value = '';
+
+    // เคลียร์รายการสินค้าและยอดรวม
+    document.getElementById('order-items').innerHTML = '';
+    document.getElementById('order-total').textContent = 'รวมทั้งหมด: 0 บาท';
+
+    // รีเซ็ตตัวแปร tempBuyNowCart ถ้ามี
+    if (typeof tempBuyNowCart !== 'undefined') {
+        tempBuyNowCart = null;
+    }
+});
+
+function flyToCart(i){
+  const img = document.querySelectorAll('.product-card img')[i];
+  const clone = img.cloneNode(true);
+  const rect = img.getBoundingClientRect();
+  clone.style.position='absolute';
+  clone.style.left=rect.left+'px';
+  clone.style.top=rect.top+'px';
+  clone.style.width=rect.width+'px';
+  clone.style.height=rect.height+'px';
+  clone.classList.add('flying-img');
+  document.body.appendChild(clone);
+  const cartRect = document.getElementById('cartBtn').getBoundingClientRect();
+  setTimeout(()=>{ 
+    clone.style.left = cartRect.left+'px';
+    clone.style.top = cartRect.top+'px';
+    clone.style.width='30px';
+    clone.style.height='30px';
+    clone.style.opacity='0';
+  },10);
+  setTimeout(()=>{ document.body.removeChild(clone); },800);
+}
+
+document.getElementById('search').addEventListener('input', (e)=>{
+  const q=e.target.value.toLowerCase();
+  document.querySelectorAll('.product-card').forEach(card=>{
+    card.style.display = card.dataset.name.includes(q)?'block':'none';
+  });
+});
+
+/* เริ่มต้น */
+createProductCards();
+renderCart();
+</script>
+</body>
+</html>
